@@ -43,7 +43,7 @@ No build step or package installation is required.
 
 ## Project status
 
-The initial responsive portfolio homepage is in place. Project cards are clearly marked as planned case studies; they will be replaced with verified demos, project details, and measurable results as those are completed.
+The portfolio includes a homepage, an anonymized WordPress case study, and generalized code samples. The examples avoid employer links and are intended to demonstrate skills without exposing private production code.
 
 ## Notes
 
