@@ -19,6 +19,21 @@
     pre{margin:0;padding:24px 28px;overflow:auto;background:#080b10;border-top:1px solid rgba(255,255,255,.1);color:#d7e2ef;font:13px/1.7 'DM Mono',monospace;tab-size:4}
     .sample-note{margin:22px 0;padding:16px 18px;border-left:3px solid var(--accent,#9be15d);background:rgba(255,255,255,.035);line-height:1.7;color:var(--text-muted,#aab4c0)}
     .sample-back{margin-top:30px}
+    .demo-learning-card{border:3px solid #2457d6;border-radius:22px;overflow:hidden;background:#fff;color:#303744;font-family:Arial,sans-serif}
+    .demo-learning-top{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:#2457d6;color:#fff;padding:12px 22px;font-size:11px;font-weight:700;letter-spacing:.08em}
+    .demo-separator{opacity:.55}.demo-learning-content{display:grid;grid-template-columns:1.35fr .9fr;gap:26px;padding:28px}
+    .demo-level-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.demo-level{color:#2457d6;font-size:12px;font-weight:800}
+    .demo-badge{border-radius:6px;background:#f1f3f7;padding:5px 8px;font-size:9px;font-weight:800}
+    .demo-learning-left h3{font-size:clamp(21px,3vw,29px);line-height:1.12;margin:0 0 8px;color:#2457d6}.demo-learning-left h4{font-size:14px;margin:0 0 12px;color:#183e99}
+    .demo-learning-left p{font-size:13px;line-height:1.65;color:#4b5563}.demo-learning-left hr{border:0;border-top:1px solid #dbe4f7;margin:16px 0}
+    .demo-outcomes{font-size:10px;color:#2457d6}.demo-learning-left ul{padding-left:18px;font-size:12px;line-height:1.7;color:#414a58}
+    .demo-course-card{background:#f3f6fc;border-radius:18px;padding:20px;align-self:start}.demo-course-label{font-size:9px;letter-spacing:.07em;color:#667085;font-weight:700}
+    .demo-course-card h4{font-size:20px;color:#2457d6;line-height:1.2;margin:10px 0}.demo-price{font-size:19px;font-weight:800;color:#a36c00}.demo-price del{font-size:12px;color:#858b96;font-weight:400;margin-left:6px}
+    .demo-funding{font-size:11px;line-height:1.5;color:#8a5b00;margin:10px 0 20px}.demo-funding strong{display:inline-block;margin-top:4px}
+    .demo-meta{display:grid;gap:8px;font-size:11px;color:#4b5563;margin-bottom:16px}.demo-meta b{color:#222b38}
+    .demo-cta{display:block;background:#2457d6;color:#fff;text-align:center;padding:12px 10px;border-radius:7px;font-size:12px;font-weight:700}
+    .demo-learning-footer{background:#e3ebfb;padding:13px 22px;font-size:12px;color:#374151}
+    @media(max-width:700px){.demo-learning-content{grid-template-columns:1fr;padding:20px}.demo-learning-top{padding:12px 16px}.demo-learning-footer{padding:13px 16px}}
     @media(max-width:600px){.sample-card-head{padding:22px 18px 14px}pre{padding:18px;font-size:12px}}
   </style>
 </head>
@@ -158,6 +173,58 @@ add_shortcode(
     'portfolio_info_banner_shortcode'
 );
 </code></pre>
+</article>
+
+<article class="sample-card">
+<div class="sample-card-head"><p class="eyebrow">04 / DIVI + WORDPRESS SHORTCODE</p><h2>Keep the Divi Code Module clean with a shortcode</h2><p>The component structure and styling live in a reusable PHP snippet. In the Divi Code Module, the page builder only needs the shortcode and its attribute values. This keeps long HTML and CSS out of the visual page layout while allowing the content to be configured per instance.</p><div class="sample-tags"><span>WordPress</span><span>Divi Builder</span><span>Code Snippets</span><span>Shortcodes</span></div></div>
+<div class="sample-card-head" style="padding-top:0">
+  <p class="eyebrow">DIVI CODE MODULE / EXAMPLE INPUT</p>
+</div>
+<pre><code>[learning_path_card
+  stage="Explore"
+  category="AI &amp; Automation"
+  level="2"
+  badge="Build practical skills"
+  title="About AI and Building AI Agents"
+  subtitle="Understand AI, then design useful agent workflows"
+  description="Explore how AI systems work and how agent-based workflows can help organize research, content, and everyday tasks."
+  course_title="AI Agent Foundations"
+  price="$249"
+  old_price="$399"
+  method="Online, self-paced"
+  duration="6 hours"
+  lessons="5 modules + project"
+  apply_text="Explore the course"
+  apply_url="#"
+  footer="A practical introduction to AI concepts and agent workflows."
+]</code></pre>
+<div class="sample-card-head">
+  <p class="eyebrow">RENDERED OUTPUT / CONCEPT PREVIEW</p>
+  <div class="demo-learning-card">
+    <div class="demo-learning-top"><span>✓ &nbsp; EXPLORE</span><span class="demo-separator">•</span><span>AI &amp; AUTOMATION</span></div>
+    <div class="demo-learning-content">
+      <div class="demo-learning-left">
+        <div class="demo-level-row"><span class="demo-level">LEVEL 2</span><span class="demo-badge">✦ BUILD PRACTICAL SKILLS</span></div>
+        <h3>About AI and Building AI Agents</h3>
+        <h4>Understand AI, then design useful agent workflows</h4>
+        <p>Explore how AI systems work and how agent-based workflows can help organize research, content, and everyday tasks.</p>
+        <hr>
+        <strong class="demo-outcomes">WHAT YOU'LL EXPLORE</strong>
+        <ul><li>Understand core AI concepts and common use cases</li><li>Map a task into a clear agent workflow</li><li>Identify where human review should remain in the loop</li></ul>
+      </div>
+      <aside class="demo-course-card">
+        <span class="demo-course-label">FEATURED LEARNING PATH</span>
+        <h4>AI Agent Foundations</h4>
+        <div class="demo-price">$249 <del>$399</del></div>
+        <p class="demo-funding">Learn at your own pace<br><strong>Online, self-paced</strong></p>
+        <div class="demo-meta"><span><b>Format:</b> Online</span><span><b>Duration:</b> 6 hours</span><span><b>Content:</b> 5 modules + project</span></div>
+        <span class="demo-cta">Explore the course ↗</span>
+      </aside>
+    </div>
+    <div class="demo-learning-footer">↳ A practical introduction to AI concepts and agent workflows.</div>
+  </div>
+  <p class="sample-note">The preview above is a portfolio mockup to demonstrate the workflow and layout; it is not connected to a live shortcode or course checkout. The displayed content has been rewritten with fictional example details.</p>
+</div>
 </article>
 </div></section>
 <section class="section"><div class="container"><div class="sample-note"><strong>Implementation notes:</strong> replace the sample taxonomy, post type, ACF field name, and selectors with values from your own project. For a production carousel, ensure the library is enqueued before initialization and account for delayed loading if applicable. For a production shortcode, register and enqueue component CSS through WordPress rather than copying inline styles into every rendered instance.</div><a class="button button-primary sample-back" href="index.html#projects">Back to portfolio <span aria-hidden="true">↗</span></a></div></section>
