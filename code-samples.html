@@ -19,6 +19,17 @@
     pre{margin:0;padding:24px 28px;overflow:auto;background:#080b10;border-top:1px solid rgba(255,255,255,.1);color:#d7e2ef;font:13px/1.7 'DM Mono',monospace;tab-size:4}
     .sample-note{margin:22px 0;padding:16px 18px;border-left:3px solid var(--accent,#9be15d);background:rgba(255,255,255,.035);line-height:1.7;color:var(--text-muted,#aab4c0)}
     .sample-back{margin-top:30px}
+    .demo-order-preview,.demo-carousel-preview{display:grid;gap:10px;margin-top:12px}
+    .demo-order-item{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.035)}
+    .demo-order-num{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;background:rgba(155,225,93,.12);color:#b9f18c;font:12px 'DM Mono',monospace}
+    .demo-order-item strong,.demo-carousel-card strong{display:block;color:#edf3fa;font-size:14px}.demo-order-item small,.demo-carousel-card small{display:block;color:#aab4c0;font-size:12px;margin-top:4px}
+    .demo-order-pill{margin-left:auto;color:#b9f18c;border:1px solid rgba(155,225,93,.3);border-radius:999px;padding:5px 8px;font-size:10px;white-space:nowrap}
+    .demo-carousel-preview{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .demo-carousel-card{min-height:116px;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;padding:16px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:linear-gradient(145deg,rgba(155,225,93,.12),rgba(255,255,255,.025))}
+    .demo-carousel-card>span{font:11px 'DM Mono',monospace;color:#b9f18c}
+    .demo-info-banner{display:flex;align-items:flex-start;gap:14px;margin-top:12px;padding:20px;border:1px solid rgba(155,225,93,.24);border-radius:14px;background:rgba(155,225,93,.07)}
+    .demo-info-icon{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:#9be15d;color:#10170b;font-weight:800}
+    .demo-info-banner strong{color:#edf3fa}.demo-info-banner p{margin:6px 0 0;color:#aab4c0;line-height:1.65;font-size:13px}
     .demo-learning-card{border:3px solid #2457d6;border-radius:22px;overflow:hidden;background:#fff;color:#303744;font-family:Arial,sans-serif}
     .demo-learning-top{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:#2457d6;color:#fff;padding:12px 22px;font-size:11px;font-weight:700;letter-spacing:.08em}
     .demo-separator{opacity:.55}.demo-learning-content{display:grid;grid-template-columns:1.35fr .9fr;gap:26px;padding:28px}
@@ -33,7 +44,7 @@
     .demo-meta{display:grid;gap:8px;font-size:11px;color:#4b5563;margin-bottom:16px}.demo-meta b{color:#222b38}
     .demo-cta{display:block;background:#2457d6;color:#fff;text-align:center;padding:12px 10px;border-radius:7px;font-size:12px;font-weight:700}
     .demo-learning-footer{background:#e3ebfb;padding:13px 22px;font-size:12px;color:#374151}
-    @media(max-width:700px){.demo-learning-content{grid-template-columns:1fr;padding:20px}.demo-learning-top{padding:12px 16px}.demo-learning-footer{padding:13px 16px}}
+    @media(max-width:700px){.demo-learning-content{grid-template-columns:1fr;padding:20px}.demo-learning-top{padding:12px 16px}.demo-learning-footer{padding:13px 16px}.demo-carousel-preview{grid-template-columns:1fr}.demo-carousel-card{min-height:80px}}
     @media(max-width:600px){.sample-card-head{padding:22px 18px 14px}pre{padding:18px;font-size:12px}}
   </style>
 </head>
@@ -103,6 +114,7 @@ if ($term instanceof WP_Term &amp;&amp; $term-&gt;taxonomy === $taxonomy) {
     }
 }
 </code></pre>
+<div class="sample-card-head"><p class="eyebrow">RESULT / ORDERED CONTENT</p><div class="demo-order-preview"><div class="demo-order-item"><span class="demo-order-num">01</span><div><strong>AI Foundations</strong><small>First item selected by the editor</small></div><span class="demo-order-pill">Position 1</span></div><div class="demo-order-item"><span class="demo-order-num">02</span><div><strong>Workflow Automation</strong><small>Second item selected by the editor</small></div><span class="demo-order-pill">Position 2</span></div><div class="demo-order-item"><span class="demo-order-num">03</span><div><strong>AI Agent Design</strong><small>Third item selected by the editor</small></div><span class="demo-order-pill">Position 3</span></div></div><p class="sample-note">Illustrative output: the cards follow the editor's selected relationship order rather than the default query order.</p></div>
 </article>
 <article class="sample-card">
 <div class="sample-card-head"><p class="eyebrow">02 / FRONT-END INTERACTION</p><h2>Initialize a carousel only when useful</h2><p>A reusable carousel should avoid duplicate initialization, wait for its dependency to be available, and use a simple static layout when there are too few items to scroll.</p><div class="sample-tags"><span>JavaScript</span><span>Swiper</span><span>Responsive UI</span></div></div>
@@ -138,6 +150,7 @@ if ($term instanceof WP_Term &amp;&amp; $term-&gt;taxonomy === $taxonomy) {
     });
   });
 });</code></pre>
+<div class="sample-card-head"><p class="eyebrow">RESULT / RESPONSIVE CAROUSEL</p><div class="demo-carousel-preview"><div class="demo-carousel-card"><span>01</span><strong>Profile One</strong><small>Featured contributor</small></div><div class="demo-carousel-card"><span>02</span><strong>Profile Two</strong><small>Featured contributor</small></div><div class="demo-carousel-card"><span>03</span><strong>Profile Three</strong><small>Featured contributor</small></div></div><p class="sample-note">Illustrative output: when there are more items than the visible columns, the carousel can scroll. With only a few items, the component can display a static layout instead.</p></div>
 </article>
 <article class="sample-card">
 <div class="sample-card-head"><p class="eyebrow">03 / REUSABLE COMPONENT</p><h2>Create a configurable information banner shortcode</h2><p>A shortcode can expose a small number of presentation options while escaping attribute output and allowing only permitted markup in the content. Keep component styles scoped to the component class.</p><div class="sample-tags"><span>PHP</span><span>Shortcodes</span><span>HTML</span><span>CSS</span></div></div>
@@ -173,6 +186,7 @@ add_shortcode(
     'portfolio_info_banner_shortcode'
 );
 </code></pre>
+<div class="sample-card-head"><p class="eyebrow">RESULT / REUSABLE BANNER</p><div class="demo-info-banner"><span class="demo-info-icon">i</span><div><strong>Helpful information</strong><p>This reusable message can be placed inside a page without repeating the component's HTML structure.</p></div></div><p class="sample-note">Illustrative output: the shortcode controls the reusable markup, while the page content supplies the message. Production styling can remain scoped to the component.</p></div>
 </article>
 
 <article class="sample-card">
