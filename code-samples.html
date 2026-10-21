@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="description" content="Sanitized WordPress and front-end code samples by Jaymee Franz: ACF ordering, responsive carousels, and reusable shortcodes.">
+  <title>WordPress Code Samples — Jaymee Franz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+  <style>
+    .samples-hero{padding-bottom:34px}.samples-lede{max-width:760px;color:var(--text-muted,#aab4c0);font-size:1.08rem;line-height:1.8}
+    .sample-list{display:grid;gap:28px}.sample-card{border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;background:rgba(255,255,255,.025)}
+    .sample-card-head{padding:26px 28px 18px}.sample-card-head h2{margin:8px 0 10px}.sample-card-head p{max-width:800px;line-height:1.75;color:var(--text-muted,#aab4c0)}
+    .sample-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.sample-tags span{font:12px 'DM Mono',monospace;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:6px 9px;color:#b8c4d0}
+    pre{margin:0;padding:24px 28px;overflow:auto;background:#080b10;border-top:1px solid rgba(255,255,255,.1);color:#d7e2ef;font:13px/1.7 'DM Mono',monospace;tab-size:4}
+    .sample-note{margin:22px 0;padding:16px 18px;border-left:3px solid var(--accent,#9be15d);background:rgba(255,255,255,.035);line-height:1.7;color:var(--text-muted,#aab4c0)}
+    .sample-back{margin-top:30px}
+    @media(max-width:600px){.sample-card-head{padding:22px 18px 14px}pre{padding:18px;font-size:12px}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="container nav-wrap">
+<a class="brand" href="index.html#home" aria-label="Jaymee Franz home"><span class="brand-mark">JF</span><span>jayfranz<span class="brand-dot">.</span></span></a>
+<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span></button>
+<nav id="primary-nav" class="primary-nav" aria-label="Main navigation"><a href="index.html#about">About</a><a href="index.html#expertise">Expertise</a><a href="index.html#projects">Projects</a><a href="index.html#contact" class="nav-cta">Let's talk <span aria-hidden="true">↗</span></a></nav>
+</div></header>
+<main id="main">
+<section class="case-hero section samples-hero"><div class="container">
+<p class="eyebrow"><a href="index.html#projects">↖ BACK TO SELECTED WORK</a></p>
+<p class="eyebrow">CODE SAMPLES / WORDPRESS &amp; FRONT-END</p>
+<h1>Small details.<br>Practical solutions<span class="accent">.</span></h1>
+<p class="samples-lede">A few simplified examples inspired by real development tasks: controlling content order with ACF, handling a responsive carousel, and building a reusable shortcode component.</p>
+<div class="sample-note">Privacy note: these are generalized portfolio demonstrations. Production identifiers, branding, URLs, business rules, and site-specific markup have been removed or replaced. They are illustrative examples, not drop-in production code.</div>
+</div></section>
+<section class="section"><div class="container sample-list">
+<article class="sample-card">
+<div class="sample-card-head"><p class="eyebrow">01 / DYNAMIC CONTENT</p><h2>Preserve a manually selected content order</h2><p>When editors choose the display order in an ACF Relationship field attached to a taxonomy term, use the selected IDs as the query order. The taxonomy filter remains in place so only posts belonging to the current term are returned.</p><div class="sample-tags"><span>PHP</span><span>WordPress</span><span>ACF Relationship</span><span>WP_Query</span></div></div>
+<pre><code>&lt;?php
+$taxonomy = 'course-category';
+$term     = get_queried_object();
+
+if ($term instanceof WP_Term &amp;&amp; $term-&gt;taxonomy === $taxonomy) {
+    // ACF field attached to this taxonomy term.
+    $selected_courses = get_field(
+        'ordered_courses',
+        $taxonomy . '_' . $term-&gt;term_id
+    );
+
+    $ordered_ids = array();
+
+    if (is_array($selected_courses)) {
+        foreach ($selected_courses as $course) {
+            $id = $course instanceof WP_Post
+                ? (int) $course-&gt;ID
+                : absint($course);
+
+            if ($id &gt; 0) {
+                $ordered_ids[] = $id;
+            }
+        }
+    }
+
+    $ordered_ids = array_values(array_unique($ordered_ids));
+
+    if ($ordered_ids) {
+        $query = new WP_Query(array(
+            'post_type'      =&gt; 'course-card',
+            'post_status'    =&gt; 'publish',
+            'posts_per_page' =&gt; -1,
+            'post__in'       =&gt; $ordered_ids,
+            'orderby'        =&gt; 'post__in',
+            'tax_query'      =&gt; array(
+                array(
+                    'taxonomy' =&gt; $taxonomy,
+                    'field'    =&gt; 'term_id',
+                    'terms'    =&gt; $term-&gt;term_id,
+                ),
+            ),
+        ));
+
+        // Render the cards from $query, then call
+        // wp_reset_postdata() after the loop.
+    }
+}
+</code></pre>
+</article>
+<article class="sample-card">
+<div class="sample-card-head"><p class="eyebrow">02 / FRONT-END INTERACTION</p><h2>Initialize a carousel only when useful</h2><p>A reusable carousel should avoid duplicate initialization, wait for its dependency to be available, and use a simple static layout when there are too few items to scroll.</p><div class="sample-tags"><span>JavaScript</span><span>Swiper</span><span>Responsive UI</span></div></div>
+<pre><code>document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('.profile-carousel').forEach((element) =&gt; {
+    if (element.dataset.initialized === 'true') return;
+
+    const slides = element.querySelectorAll('.swiper-slide');
+    const columns = Math.max(
+      1,
+      Number.parseInt(element.dataset.columns || '3', 10)
+    );
+
+    // A static grid is simpler when scrolling is unnecessary.
+    if (slides.length &lt;= columns) {
+      element.classList.add('is-static');
+      element.style.setProperty('--columns', columns);
+      return;
+    }
+
+    // This example assumes Swiper has already been loaded.
+    if (typeof Swiper === 'undefined') return;
+
+    element.dataset.initialized = 'true';
+
+    new Swiper(element, {
+      slidesPerView: columns,
+      spaceBetween: 20,
+      breakpoints: {
+        320: { slidesPerView: Math.min(2, columns) },
+        1024: { slidesPerView: columns }
+      }
+    });
+  });
+});</code></pre>
+</article>
+<article class="sample-card">
+<div class="sample-card-head"><p class="eyebrow">03 / REUSABLE COMPONENT</p><h2>Create a configurable information banner shortcode</h2><p>A shortcode can expose a small number of presentation options while escaping attribute output and allowing only permitted markup in the content. Keep component styles scoped to the component class.</p><div class="sample-tags"><span>PHP</span><span>Shortcodes</span><span>HTML</span><span>CSS</span></div></div>
+<pre><code>&lt;?php
+function portfolio_info_banner_shortcode($atts, $content = null) {
+    $atts = shortcode_atts(
+        array('icon' =&gt; ''),
+        $atts,
+        'portfolio_info_banner'
+    );
+
+    ob_start();
+    ?&gt;
+    &lt;aside class="portfolio-info-banner"&gt;
+        &lt;?php if (!empty($atts['icon'])) : ?&gt;
+            &lt;img
+                class="portfolio-info-banner__icon"
+                src="&lt;?php echo esc_url($atts['icon']); ?&gt;"
+                alt=""
+                aria-hidden="true"
+            &gt;
+        &lt;?php endif; ?&gt;
+
+        &lt;div class="portfolio-info-banner__content"&gt;
+            &lt;?php echo wp_kses_post($content); ?&gt;
+        &lt;/div&gt;
+    &lt;/aside&gt;
+    &lt;?php
+    return ob_get_clean();
+}
+add_shortcode(
+    'portfolio_info_banner',
+    'portfolio_info_banner_shortcode'
+);
+</code></pre>
+</article>
+</div></section>
+<section class="section"><div class="container"><div class="sample-note"><strong>Implementation notes:</strong> replace the sample taxonomy, post type, ACF field name, and selectors with values from your own project. For a production carousel, ensure the library is enqueued before initialization and account for delayed loading if applicable. For a production shortcode, register and enqueue component CSS through WordPress rather than copying inline styles into every rendered instance.</div><a class="button button-primary sample-back" href="index.html#projects">Back to portfolio <span aria-hidden="true">↗</span></a></div></section>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html#home"><span class="brand-mark">JF</span><span>jayfranz<span class="brand-dot">.</span></span></a><p>Designed with intention. Built for the web.</p><p>© <span id="year"></span> Jaymee Franz</p></div></footer>
+</body>
+</html>
