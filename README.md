@@ -1,4 +1,4 @@
-# Jaymee Franz — Developer Portfolio
+# Developer Portfolio
 
 A responsive personal portfolio showcasing my work and interests in **WordPress development, front-end engineering, and website optimization**.
 
